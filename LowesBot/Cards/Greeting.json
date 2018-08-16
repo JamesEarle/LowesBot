@@ -1,0 +1,43 @@
+﻿{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "Image",
+          "url": "https://www.lowes.com/images/logos/2016_lowes_logo/lowes_logo_pms_280/Lowes_logo_pms_280.jpg",
+          "size": "medium"
+        },
+        {
+          "type": "TextBlock",
+          "wrap": "true",
+          "text": "Hi, I'm Milo, your automated assistant. I'll get you to the right person as soon as possible."
+        },
+        {
+          "type": "Button",
+          "wrap": "true"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Order Status",
+      "data": { "id":  1 }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Find Store",
+      "data": { "id": 2 }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Returns & Exchanges",
+      "data": { "id": 3 }
+    }
+  ]
+} 
