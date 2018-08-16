@@ -14,7 +14,7 @@
         {
           "type": "TextBlock",
           "wrap": "true",
-          "text": "Hi, I'm Milo, your automated assistant. I'll get you to the right person as soon as possible."
+          "text": "%greetingtext%"
         },
         {
           "type": "Button",
@@ -26,17 +26,17 @@
   "actions": [
     {
       "type": "Action.Submit",
-      "title": "Order Status",
-      "data": { "id":  1 }
+      "title": "%option1%",
+      "data": { "id": 1 }
     },
     {
       "type": "Action.Submit",
-      "title": "Find Store",
+      "title": "%option2%",
       "data": { "id": 2 }
     },
     {
       "type": "Action.Submit",
-      "title": "Returns & Exchanges",
+      "title": "%option3%",
       "data": { "id": 3 }
     }
   ]

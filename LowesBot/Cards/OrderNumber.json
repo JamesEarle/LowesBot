@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
@@ -10,11 +10,13 @@
     },
     {
       "type": "TextBlock",
-      "text": "%prompt1&"
+      "text": "%prompt1"
     },
     {
-      "type": "TextBlock",
-      "text": "%orderNumber&"
+      "type": "Input.Text",
+      "id": "orderNumber",
+      "placeholder": "%prompt1%",
+      "style": "text"
     }
   ],
   "actions": [

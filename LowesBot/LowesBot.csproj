@@ -12,7 +12,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LowesBot</RootNamespace>
-    <AssemblyName>Bot Application</AssemblyName>
+    <AssemblyName>LowesBot</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -130,9 +130,18 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\Strings.en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.en.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Models\OrderData.cs" />
+    <Compile Include="Services\LowesHelper.cs" />
+    <Compile Include="Models\ButtonData.cs" />
     <Compile Include="Dialogs\FindStoreDialog.cs" />
+    <Compile Include="Models\FormData.cs" />
     <Compile Include="Dialogs\OrderStatusDialog.cs" />
     <Compile Include="Dialogs\ReturnsAndExchangesDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
@@ -140,8 +149,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BusinessHoursHelper.cs" />
     <Compile Include="Services\CardService.cs" />
     <Compile Include="Cards\Extensions.cs" />
+    <Compile Include="Services\HolidayHelper.cs" />
+    <Compile Include="Services\ResourceHelper.cs" />
+    <Compile Include="Services\TimeZoneHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -149,6 +162,7 @@
     </Content>
     <Content Include="Cards\Greeting.json" />
     <Content Include="Cards\OrderStatus.json" />
+    <Content Include="Cards\OrderNumber.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -156,7 +170,13 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\Strings.en.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

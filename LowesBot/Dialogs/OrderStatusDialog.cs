@@ -10,28 +10,48 @@ namespace LowesBot.Dialogs
     {
         public async Task StartAsync(IDialogContext context)
         {
-            var card = CardService.GetOrderStatusCard();
+            await SendNumberCardAsync(context);
+        }
+
+        private async Task SendNumberCardAsync(IDialogContext context)
+        {
+            var card = CardService.GetOrderNumberCard();
             await context.PostAsync(card);
-            context.Wait(MessageReceivedAsync);
+            context.Wait(ReceiveNumberCardAsync);
         }
 
-        public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
+        private async Task ReceiveNumberCardAsync(IDialogContext context, IAwaitable<object> result)
         {
-            var message = await argument;
+            var activity = await result as Activity;
+            var json = activity.Value.ToString();
 
-            var orderNumber = message.Text;
-
-            await context.PostAsync($"Checking status of order #{orderNumber}...");
-            var status = CheckStatus(orderNumber);
-            await context.PostAsync(status);
-
-            context.Done(message);
+            var button = ButtonData.Parse(json);
+            if (button.Id == 1)
+            {
+                var order = OrderData.Parse(json);
+                if (LowesHelper.IsValidOrderId(order.Number))
+                {
+                    await SendStatusCardAsync(context, order);
+                }
+                else
+                {
+                    // tell them it is invalid
+                }
+            }
+            else if (button.Id == 2)
+            {
+                // they clicked cancel
+                // TODO: return home
+                context.Done("Heading home.");
+            }
         }
 
-        private string CheckStatus(string orderNumber)
+        private async Task SendStatusCardAsync(IDialogContext context, OrderData order)
         {
-            // Do DB Call given order number
-            return $"Order #{orderNumber} - Out for delivery on {DateTime.Today.ToString("M/d")}";
+            var card = CardService.GetOrderStatusCard(order);
+            await context.PostAsync(card);
+            // TODO: return home
+            context.Done("Heading home.");
         }
     }
 }

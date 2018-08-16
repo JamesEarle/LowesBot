@@ -1,0 +1,544 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="A1" xml:space="preserve">
+    <value>Is there anything else I can help you with?</value>
+  </data>
+  <data name="B1" xml:space="preserve">
+    <value>Find a store</value>
+  </data>
+  <data name="B1_1" xml:space="preserve">
+    <value>Provide your order number</value>
+  </data>
+  <data name="B1_2" xml:space="preserve">
+    <value>Order Number</value>
+    <comment>Placeholder text in form field</comment>
+  </data>
+  <data name="B2" xml:space="preserve">
+    <value>Check order status</value>
+  </data>
+  <data name="B3" xml:space="preserve">
+    <value>Returns and exchanges</value>
+  </data>
+  <data name="C1" xml:space="preserve">
+    <value>Which type of account may I assist you with?
+A) New credit account
+B) Existing credit account</value>
+  </data>
+  <data name="C2" xml:space="preserve">
+    <value>If you’d like to apply for a credit account, visit
+m.lowes.com/credit. If you’ve already applied, you’ll be
+notified of your status within 4 – 10 business days.</value>
+  </data>
+  <data name="C3" xml:space="preserve">
+    <value>For more information, please call Synchrony Bank at 1-800-444-
+1408.</value>
+  </data>
+  <data name="C4" xml:space="preserve">
+    <value>To manage your account or pay a bill, visit m.lowes.com/credit.
+You may also pay your bill at a Lowe’s store or by calling
+Synchrony Bank at 1-800-444-1408.</value>
+  </data>
+  <data name="D1" xml:space="preserve">
+    <value>Please confirm your phone number so we can lookup your
+customer record and help you. Don’t worry — we won’t contact
+you with promotional texts or calls.</value>
+  </data>
+  <data name="D2" xml:space="preserve">
+    <value>What's your ZIP code? We'll find a Lowe's near you.</value>
+  </data>
+  <data name="E1" xml:space="preserve">
+    <value>Thanks. Just a moment while I send your information over to a
+Lowe’s associate.</value>
+  </data>
+  <data name="E1*" xml:space="preserve">
+    <value>OK, I’ve passed your information along and an associate will be
+in touch at their next availability.</value>
+  </data>
+  <data name="E10" xml:space="preserve">
+    <value>Looks like you sent another photo — thanks. That's all for now.
+I'll pass this along so your associate has everything they need
+to assist you.</value>
+  </data>
+  <data name="E11" xml:space="preserve">
+    <value>Looks like you sent another photo — thanks. That's all for now.
+I'll pass this along so your repair associate has everything they
+need to assist you.</value>
+  </data>
+  <data name="E12" xml:space="preserve">
+    <value>No problem. Just a heads up, I may not be able to connect you
+with the same associate.</value>
+  </data>
+  <data name="E13" xml:space="preserve">
+    <value>OK. I'm passing your information along to an associate. Just a
+heads up, I may not be able to connect you with the same
+person as before.</value>
+  </data>
+  <data name="E14" xml:space="preserve">
+    <value>It's been nice chatting with you. Goodbye for now.</value>
+  </data>
+  <data name="E15" xml:space="preserve">
+    <value>Also, we want to give you our full attention and we're currently
+helping other customers, so we'll be back with you as soon as
+possible.</value>
+  </data>
+  <data name="E16" xml:space="preserve">
+    <value>This session is now closed.</value>
+  </data>
+  <data name="E17" xml:space="preserve">
+    <value>OK, no problem. Take care!</value>
+  </data>
+  <data name="E2" xml:space="preserve">
+    <value>Thanks for chatting.</value>
+  </data>
+  <data name="E3" xml:space="preserve">
+    <value>Thanks. I'm sending your information to a Lowe's repair
+associate to review, and they'll be in touch at their next
+availability.</value>
+  </data>
+  <data name="E4" xml:space="preserve">
+    <value>Great, that's all for now. I'll pass this information along so your
+associate has the details they need to help you with your repair
+or warranty.</value>
+  </data>
+  <data name="E5" xml:space="preserve">
+    <value>Great, that's all for now. I'll pass this information along so your
+associate has the details they need to help you with your order.</value>
+  </data>
+  <data name="E6" xml:space="preserve">
+    <value>Great, that's all for now. I'll pass this information along so your
+associate has the details they need to help you.</value>
+  </data>
+  <data name="E7" xml:space="preserve">
+    <value>No problem, I'll pass your information along to an associate.</value>
+  </data>
+  <data name="E8" xml:space="preserve">
+    <value>Looks like you sent a photo — thanks. I'll pass this along so
+your associate has everything they need to assist you.</value>
+  </data>
+  <data name="E9" xml:space="preserve">
+    <value>Looks like you sent another photo — thanks. I'll pass this along
+so your associate has everything they need to assist you.</value>
+  </data>
+  <data name="F0" xml:space="preserve">
+    <value>Hey, [customer first name]. Sorry to hear you’re feeling
+frustrated. We’re happy to discuss this with you and get a little
+more information. Please text your name and the word
+FACEBOOK to 704-313-1818.</value>
+  </data>
+  <data name="F1" xml:space="preserve">
+    <value>Hello, thanks for texting us. We’ll be with you as soon as we
+can to discuss your experience.</value>
+  </data>
+  <data name="F2" xml:space="preserve">
+    <value>Thanks for texting us. We close at 8 p.m. ET tonight and open
+at 8 a.m. ET.</value>
+  </data>
+  <data name="F3" xml:space="preserve">
+    <value>If we can’t get to you before we close, we’ll be in touch
+tomorrow as soon as possible.</value>
+  </data>
+  <data name="F4" xml:space="preserve">
+    <value>Thanks for texting us. We close at 7 p.m. ET tonight and open
+at 8 a.m. ET.</value>
+  </data>
+  <data name="F5" xml:space="preserve">
+    <value>If we can’t get to you before we close, we’ll be in touch
+tomorrow as soon as possible.</value>
+  </data>
+  <data name="F6" xml:space="preserve">
+    <value>Hello, thanks for texting us. We’re currently closed until 8 a.m.
+ET, but we’ll be in touch as soon as possible.</value>
+  </data>
+  <data name="G1" xml:space="preserve">
+    <value>Hi. I'm Milo, your automated assistant. I'll get you to the right person as soon as possible.</value>
+  </data>
+  <data name="G10" xml:space="preserve">
+    <value>Don't mention it — I'm happy to help. Our last conversation
+timed out, but I'm still here to help.
+A) Main menu
+B) Speak to an associate
+C) Repeat last question</value>
+  </data>
+  <data name="G11" xml:space="preserve">
+    <value>Hey, it’s Milo. I’m sorry your issue wasn’t resolved. Is there
+anything else I can do?
+A) Main menu
+B) Speak to an associate
+C) Close conversation</value>
+  </data>
+  <data name="G12" xml:space="preserve">
+    <value>I’m sorry I wasn’t able to help out more. I’m happy to try again,
+if you like.
+A) Main menu
+B) Speak to an associate
+C) Repeat last question</value>
+  </data>
+  <data name="G2" xml:space="preserve">
+    <value>Hi. I'm Milo, your automated assistant.</value>
+  </data>
+  <data name="G3" xml:space="preserve">
+    <value>Hi. I'm Milo, your automated assistant.
+For your protection, please don't share credit card or security
+code information.</value>
+  </data>
+  <data name="G4" xml:space="preserve">
+    <value>Hi! I'm Milo, your automated assistant. Looks like you sent a
+photo — thanks. I'm happy to help. I just need a little more
+information first.
+For your protection, please don't share credit card or security
+code information via chat.</value>
+  </data>
+  <data name="G5" xml:space="preserve">
+    <value>Nice to see you again. It's Milo. Our earlier chat with the
+associate timed out, but I'll do my best to still help.
+A) Main menu
+B) Speak to an associate</value>
+  </data>
+  <data name="G6" xml:space="preserve">
+    <value>Nice to see you again. It's Milo. Our last chat with the
+associate timed out, but I'll do my best to still help.
+A) Main menu
+B) Speak to an associate</value>
+  </data>
+  <data name="G7" xml:space="preserve">
+    <value>Hey, welcome back. Milo, here. Our earlier conversation timed
+out, but I'm still here to help.
+A) Main menu
+B) Speak to an associate
+C) Repeat last question</value>
+  </data>
+  <data name="G8" xml:space="preserve">
+    <value>Hey, welcome back. Milo, here. Our last conversation timed
+out, but I'm still here to help.
+A) Main menu
+B) Speak to an associate
+C) Repeat last question</value>
+  </data>
+  <data name="G9" xml:space="preserve">
+    <value>Hey, you’re welcome. By the way, it's Milo. Our earlier chat
+with the associate timed out. How can I help?
+A) Main menu
+B) Speak to an associate</value>
+  </data>
+  <data name="H1" xml:space="preserve">
+    <value>OK, got it. Just so you know, we close at 8 p.m. ET tonight and
+reopen at 8 a.m. ET.</value>
+  </data>
+  <data name="H10" xml:space="preserve">
+    <value>If we can’t get to you before we close, we’ll be in touch
+tomorrow as soon as possible.</value>
+  </data>
+  <data name="H11" xml:space="preserve">
+    <value>OK, got it. Just so you know, we close at 9 p.m. ET tonight and
+open at 8 a.m. ET.</value>
+  </data>
+  <data name="H11*" xml:space="preserve">
+    <value>Just so you know, we close at 9 p.m. ET tonight and open at 8
+a.m. ET.</value>
+  </data>
+  <data name="H13" xml:space="preserve">
+    <value>Thanks. We’re closed but open at 8 a.m. ET. Your message is
+important, and we’ll be in touch ASAP. Until then, I’d like to get
+a few repair/warranty details.</value>
+  </data>
+  <data name="H13*" xml:space="preserve">
+    <value>We’re closed but open at 8 a.m. ET. Your message is
+important, and we’ll be in touch ASAP. Until then, I’d like to get
+a few details on the repair/warranty.</value>
+  </data>
+  <data name="H14" xml:space="preserve">
+    <value>We’re closed now but open at 8 a.m. ET. Your message is
+important, and we’ll be in touch ASAP. Until then, I’d like to get
+a few details about your order.</value>
+  </data>
+  <data name="H15" xml:space="preserve">
+    <value>We’re closed now but open at 8 a.m. ET. Your message is
+important to us, and we’ll be in touch ASAP. Until then, I’d like
+to get a few quick details.</value>
+  </data>
+  <data name="H16" xml:space="preserve">
+    <value>Thanks. We’re closed but open at 8 a.m. ET. Your message is
+important, and we’ll be in touch ASAP. Until then, I’d like to get
+a few quick details from you.</value>
+  </data>
+  <data name="H17" xml:space="preserve">
+    <value>We’re closed now but open at 8 a.m. ET. Your message is
+important, and we’ll be in touch ASAP. Until then, I’d like to get
+a few details about your order.</value>
+  </data>
+  <data name="H2" xml:space="preserve">
+    <value>If we can’t get to you before we close, we’ll be in touch
+tomorrow as soon as possible to discuss your repair or
+warranty.</value>
+  </data>
+  <data name="H5" xml:space="preserve">
+    <value>Just so you know, we close at 10 p.m. ET tonight and open at 8
+a.m. ET.</value>
+  </data>
+  <data name="H6" xml:space="preserve">
+    <value>If we can’t get to you before we close, we’ll be in touch
+tomorrow as soon as possible to discuss your order.</value>
+  </data>
+  <data name="H7" xml:space="preserve">
+    <value>Just so you know, we close at 9 p.m. ET tonight and open at 8
+a.m. ET.</value>
+  </data>
+  <data name="H8" xml:space="preserve">
+    <value>If we can’t get to you before we close, we’ll be in touch
+tomorrow as soon as possible to discuss your order.</value>
+  </data>
+  <data name="H9" xml:space="preserve">
+    <value>OK, got it. Just so you know, we close at 10 p.m. ET tonight and
+open at 8 a.m. ET.</value>
+  </data>
+  <data name="H9*" xml:space="preserve">
+    <value>Just so you know, we close at 10 p.m. ET tonight and open at 8
+a.m. ET.</value>
+  </data>
+  <data name="I1" xml:space="preserve">
+    <value>Would you like to keep chatting?
+A) Yes
+B) No</value>
+  </data>
+  <data name="I2" xml:space="preserve">
+    <value>Alright, let's see where we were…</value>
+  </data>
+  <data name="M1" xml:space="preserve">
+    <value>How can I help you? You can reply with:
+A) Store info
+B) Lowe's credit card
+C) Repair/warranty
+D) Order status
+E) Something else</value>
+  </data>
+  <data name="M2" xml:space="preserve">
+    <value>What can I look into for you?
+A) Store info
+B) Lowe's credit card
+C) Repair/warranty
+D) Order status
+E) Something else</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="O1" xml:space="preserve">
+    <value>Do you have questions about P.O. #: XXXXXX?
+A) Yes
+B) No</value>
+  </data>
+  <data name="O2" xml:space="preserve">
+    <value>Do you have questions about order #: XXXXXX?
+A) Yes
+B) No</value>
+  </data>
+  <data name="O3" xml:space="preserve">
+    <value>Do you have questions about invoice #: XXXXXX?
+A) Yes
+B) No</value>
+  </data>
+  <data name="O4" xml:space="preserve">
+    <value>Do you have questions about a recent order?
+A) Yes
+B) No</value>
+  </data>
+  <data name="O5" xml:space="preserve">
+    <value>Do you want to check the status of order #: XXXXXX?
+A) Yes
+B) No</value>
+  </data>
+  <data name="O6" xml:space="preserve">
+    <value>Do you want to check the status of invoice #: XXXXXX?
+A) Yes
+B) No</value>
+  </data>
+  <data name="O7" xml:space="preserve">
+    <value>Do you want to check the status of P.O. #: XXXXXX?
+A) Yes
+B) No</value>
+  </data>
+  <data name="O8" xml:space="preserve">
+    <value>OK, if you have the order or invoice number, send it to me. If
+not, just say NO and I can still help.</value>
+  </data>
+  <data name="O9" xml:space="preserve">
+    <value>Do you have questions about another order?
+A) Yes
+B) No</value>
+  </data>
+  <data name="R1" xml:space="preserve">
+    <value>Which type of product needs a repair or warranty?
+A) Major appliance
+B) Outdoor power equipment
+C) Other product</value>
+  </data>
+  <data name="R2" xml:space="preserve">
+    <value>What's the model or serial number? This is usually located on
+the inside door/frame or near the control panel.</value>
+  </data>
+  <data name="R3" xml:space="preserve">
+    <value>Last question: When did you purchase your appliance? The date
+is on your receipt or order email. If you're not sure, we can
+work with an estimate.</value>
+  </data>
+  <data name="S1" xml:space="preserve">
+    <value>Thanks. Now, what would you like to know more about?
+A) Store hours
+B) In-stock items
+C) Something else</value>
+  </data>
+  <data name="S2" xml:space="preserve">
+    <value>What's the product name or item number you're looking for?</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="U1" xml:space="preserve">
+    <value>I'm sorry. I didn't get that. What would you like to do next?
+A) Repeat the question
+B) Main menu
+C) Speak to an associate</value>
+  </data>
+  <data name="U2" xml:space="preserve">
+    <value>I’m not sure I understand. Help me by replying with:
+A) Repeat the question
+B) Main menu
+C) Speak to an associate</value>
+  </data>
+  <data name="U3" xml:space="preserve">
+    <value>Hmm... I still didn't understand. I'm going to pass this
+information along to an associate so they can help you. We'll
+be in touch ASAP.</value>
+  </data>
+  <data name="U4" xml:space="preserve">
+    <value>I think an associate can better help you from here, so I'm going
+to pass along your info. We're closed now but open at 8 a.m.
+ET and will be in touch ASAP.</value>
+  </data>
+  <data name="Y1" xml:space="preserve">
+    <value>Don't mention it — I'm happy to help.</value>
+  </data>
+  <data name="Y2" xml:space="preserve">
+    <value>You're welcome — see you next time.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+</root>
