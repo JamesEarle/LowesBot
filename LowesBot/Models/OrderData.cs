@@ -1,15 +1,24 @@
 ﻿using Newtonsoft.Json;
 
-namespace LowesBot.Dialogs
+namespace LowesBot.Models
 {
     public partial class OrderData
     {
         [JsonProperty("orderNumber")]
         public string Number { get; set; }
 
-        public static OrderData Parse(string json)
+        public static bool TryParse(string json, out OrderData  data)
         {
-            return JsonConvert.DeserializeObject<OrderData>(json);
+            try
+            {
+                data = JsonConvert.DeserializeObject<OrderData>(json);
+                return true;
+            }
+            catch 
+            {
+                data = default(OrderData);
+                return false;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -22,7 +23,7 @@ namespace LowesBot.Services
         {
             try
             {
-                return _manager.GetString(key);
+                return _manager.GetString(key, new CultureInfo("en"));
             }
             catch (Exception ex)
             {

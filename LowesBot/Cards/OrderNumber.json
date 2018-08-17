@@ -10,12 +10,12 @@
     },
     {
       "type": "TextBlock",
-      "text": "%prompt1"
+      "text": "%prompt1%"
     },
     {
       "type": "Input.Text",
       "id": "orderNumber",
-      "placeholder": "%prompt1%",
+      "placeholder": "%prompt2%",
       "style": "text"
     }
   ],

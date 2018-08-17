@@ -1,15 +1,26 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Microsoft.Bot.Connector;
+using Newtonsoft.Json;
 
-namespace LowesBot.Dialogs
+namespace LowesBot.Models
 {
     public partial class ButtonData
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
+        [JsonProperty("id", Required = Required.Always)]
+        public int Id { get; set; }
 
-        public static ButtonData Parse(string json)
+        public static bool TryParse(string json, out ButtonData data)
         {
-            return JsonConvert.DeserializeObject<ButtonData>(json);
+            try
+            {
+                data = JsonConvert.DeserializeObject<ButtonData>(json);
+                return true;
+            }
+            catch
+            {
+                data = default(ButtonData);
+                return false;
+            }
         }
     }
 }

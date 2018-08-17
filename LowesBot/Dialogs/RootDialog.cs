@@ -1,74 +1,91 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LowesBot.Models;
+using LowesBot.Services;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
 
 namespace LowesBot.Dialogs
 {
-    public enum State { Welcome_Closed, Welcome_AlmostClosed, Welcome_Open, AnythingElse }
-
     [Serializable]
-    public class RootDialog : IDialog<object>
+    public class RootDialog : ICardDialog
     {
+        int _prompts = 0;
 
         public async Task StartAsync(IDialogContext context)
         {
-            await SendGreetingCardAsync(context, IsOpen());
+            await SendCardAsync(context);
         }
 
-        State IsOpen() { /* todo */ return State.Welcome_Open; }
-
-        private async Task SendGreetingCardAsync(IDialogContext context, State state)
+        public async Task SendCardAsync(IDialogContext context)
         {
-            // handle state here!
-            var card = CardService.GetGreetingCard(state);
+            var card = (++_prompts == 1)
+                ? CardFactory.GetGreetingCard(context)
+                : CardFactory.GetAnythingElseCard();
             await context.PostAsync(card);
-            context.Wait(ReceiveGreetingCardAsync);
+            context.Wait(ResumeAfterCardAsync);
         }
 
-        private async Task ReceiveGreetingCardAsync(IDialogContext context, IAwaitable<object> result)
+        public async Task ResumeAfterCardAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
-            var json = activity.Value.ToString();
-            var button = ButtonData.Parse(json); // See what button they clicked in response to previous card
-            await OnOptionSelected(context, button);
-        }
-
-        private async Task OnOptionSelected(IDialogContext context, ButtonData button)
-        {
-            try
+            if (string.IsNullOrEmpty(activity.Value?.ToString()))
             {
-                switch (button.Id)
-                {
-                    case 1:
-                        context.Call(new FindStoreDialog(), ResumeAfterOptionDialog);
-                        break;
-                    case 2:
-                        context.Call(new OrderStatusDialog(), ResumeAfterOptionDialog);
-                        break;
-                    case 3:
-                        context.Call(new ReturnsAndExchangesDialog(), ResumeAfterOptionDialog);
-                        break;
-                    case 6:
-                        await context.PostAsync("Thanks for using Lowe's Bot!");
-                        context.Done("Process Terminated");
-                        break;
-                    default:
-                        break;
-                }
+                return;
             }
-            catch (TooManyAttemptsException ex)
+            var value = activity.Value.ToString();
+
+            if (ButtonData.TryParse(value, out var button))
             {
-                Console.WriteLine(ex.Message);
-                await context.PostAsync("Oops! Too many attempts. You can try starting again.");
-                context.Wait(ReceiveGreetingCardAsync);
+                await HandleButtonInput(context, value, button);
+            }
+            else
+            {
+                await HandleFreeformInput(context, value);
             }
         }
 
-        private Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        public Task HandleButtonInput(IDialogContext context, string json, ButtonData button)
         {
-            return SendGreetingCardAsync(context, State.AnythingElse);
+            if (button.Id == 1)
+            {
+                context.Call(new FindStoreDialog(), ResumeAfterChildDialog);
+            }
+            else if (button.Id == 2)
+            {
+                context.Call(new OrderNumberDialog(), ResumeAfterChildDialog);
+            }
+            else if (button.Id == 3)
+            {
+                context.Call(new ReturnsAndExchangesDialog(), ResumeAfterChildDialog);
+            }
+            return Task.CompletedTask;
+        }
+
+        public async Task HandleFreeformInput(IDialogContext context, string text)
+        {
+            if (await DialogHelper.TryRecognizedFormat(context, text, ResumeAfterChildDialog)
+                || await DialogHelper.TryUsingLuis(context, text, ResumeAfterChildDialog))
+            {
+                await SendCardAsync(context);
+            }
+            else
+            {
+                await context.PostAsync("Sorry, I don't understand.");
+                await SendCardAsync(context);
+            }
+        }
+
+        public async Task ResumeAfterChildDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            await SendCardAsync(context);
+        }
+
+        public void ExitDialog(IDialogContext context, object value = null)
+        {
+            context.EndConversation(value?.ToString());
         }
     }
 }

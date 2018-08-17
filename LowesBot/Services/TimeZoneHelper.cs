@@ -45,8 +45,13 @@ namespace LowesBot.Services
         16/08/2018 00:00:00 -10:30 = Unknown
         */
 
-        public static TimeZoneName DetermineZone(DateTimeOffset date)
+        public static TimeZoneName DetermineZone(DateTimeOffset? date)
         {
+            if (!date.HasValue)
+            {
+                return TimeZoneName.Unknown;
+            }
+
             foreach (var zone in ((TimeZoneName[])Enum.GetValues(typeof(TimeZoneName))).Where(x => x != TimeZoneName.Unknown))
             {
                 if (TestOffset(zone)) return zone;
@@ -56,10 +61,10 @@ namespace LowesBot.Services
             bool TestOffset(TimeZoneName zone)
             {
                 var info = GetZoneInfo(zone);
-                var offset = info.IsDaylightSavingTime(date)
+                var offset = info.IsDaylightSavingTime(date.Value)
                     ? info.BaseUtcOffset.Add(TimeSpan.FromHours(1))
                     : info.BaseUtcOffset;
-                return Equals(date.Offset, offset);
+                return Equals(date.Value.Offset, offset);
             }
 
             TimeZoneInfo GetZoneInfo(TimeZoneName zone)

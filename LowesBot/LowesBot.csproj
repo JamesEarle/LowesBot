@@ -130,29 +130,30 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\Strings.en.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.en.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Dialogs\ICardDialog.cs" />
+    <Compile Include="Dialogs\OrderNumberDialog.cs" />
     <Compile Include="Models\OrderData.cs" />
+    <Compile Include="Models\OrderNumberFormData.cs" />
+    <Compile Include="Services\CardFactory.cs" />
+    <Compile Include="Services\CardService.cs" />
+    <Compile Include="Services\ConfigHelper.cs" />
+    <Compile Include="Models\InvoiceData.cs" />
+    <Compile Include="Services\DialogHelper.cs" />
     <Compile Include="Services\LowesHelper.cs" />
     <Compile Include="Models\ButtonData.cs" />
     <Compile Include="Dialogs\FindStoreDialog.cs" />
-    <Compile Include="Models\FormData.cs" />
-    <Compile Include="Dialogs\OrderStatusDialog.cs" />
     <Compile Include="Dialogs\ReturnsAndExchangesDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BusinessHoursHelper.cs" />
-    <Compile Include="Services\CardService.cs" />
     <Compile Include="Cards\Extensions.cs" />
     <Compile Include="Services\HolidayHelper.cs" />
+    <Compile Include="Services\LuisService.cs" />
+    <Compile Include="Models\PurchaseOrderData.cs" />
     <Compile Include="Services\ResourceHelper.cs" />
     <Compile Include="Services\TimeZoneHelper.cs" />
   </ItemGroup>
@@ -173,8 +174,6 @@
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\Strings.en.resx">
       <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.en.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
