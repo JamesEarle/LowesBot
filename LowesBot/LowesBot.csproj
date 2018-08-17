@@ -136,6 +136,7 @@
     <Compile Include="Dialogs\OrderNumberDialog.cs" />
     <Compile Include="Models\OrderData.cs" />
     <Compile Include="Models\OrderNumberFormData.cs" />
+    <Compile Include="Services\ActivityHelper.cs" />
     <Compile Include="Services\CardFactory.cs" />
     <Compile Include="Services\CardService.cs" />
     <Compile Include="Services\ConfigHelper.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Services\LuisService.cs" />
     <Compile Include="Models\PurchaseOrderData.cs" />
     <Compile Include="Services\ResourceHelper.cs" />
+    <Compile Include="Services\TelemetryService.cs" />
     <Compile Include="Services\TimeZoneHelper.cs" />
   </ItemGroup>
   <ItemGroup>

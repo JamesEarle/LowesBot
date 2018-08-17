@@ -31,19 +31,25 @@ namespace LowesBot.Dialogs
         public async Task ResumeAfterCardAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
-            if (string.IsNullOrEmpty(activity.Value?.ToString()))
+            if (!string.IsNullOrEmpty(activity.Text))
             {
-                return;
+                await HandleFreeformInput(context, activity.Text);
             }
-            var value = activity.Value.ToString();
-
-            if (ButtonData.TryParse(value, out var button))
+            else if (!string.IsNullOrEmpty(activity.Value?.ToString()))
             {
-                await HandleButtonInput(context, value, button);
+                var value = activity.Value.ToString();
+                if (ButtonData.TryParse(value, out var button))
+                {
+                    await HandleButtonInput(context, value, button);
+                }
+                else
+                {
+                    // this is an error
+                }
             }
-            else
+            else if (_prompts > 1)
             {
-                await HandleFreeformInput(context, value);
+                await context.PostAsync("Say wa?!");
             }
         }
 
@@ -66,8 +72,15 @@ namespace LowesBot.Dialogs
 
         public async Task HandleFreeformInput(IDialogContext context, string text)
         {
-            if (await DialogHelper.TryRecognizedFormat(context, text, ResumeAfterChildDialog)
-                || await DialogHelper.TryUsingLuis(context, text, ResumeAfterChildDialog))
+            if (await DialogHelper.TryRecognizedFormat(context, text, ResumeAfterChildDialog))
+            {
+                await SendCardAsync(context);
+            }
+            else if (DialogHelper.TryUsingText(context, text))
+            {
+                // nothing
+            }
+            else if (await DialogHelper.TryUsingLuis(context, text))
             {
                 await SendCardAsync(context);
             }

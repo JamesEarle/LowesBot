@@ -12,7 +12,7 @@ namespace LowesBot.Services
         {
             var card = CardFactory.GetOrderStatusCard(data);
             await context.PostAsync(card);
-            context.Wait(callback);
+            // context.Wait(callback);
         }
 
         public static async Task ShowPurchaseOrderStatusAsync(IDialogContext context, PurchaseOrderData data, ResumeAfter<IMessageActivity> callback)

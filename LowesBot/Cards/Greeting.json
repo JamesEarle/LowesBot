@@ -14,7 +14,7 @@
         {
           "type": "TextBlock",
           "wrap": "true",
-          "text": "%greetingtext%"
+          "text": "%prompt_title%"
         },
         {
           "type": "Button",
@@ -26,17 +26,17 @@
   "actions": [
     {
       "type": "Action.Submit",
-      "title": "%option1%",
+      "title": "%option_store%",
       "data": { "id": 1 }
     },
     {
       "type": "Action.Submit",
-      "title": "%option2%",
+      "title": "%option_order%",
       "data": { "id": 2 }
     },
     {
       "type": "Action.Submit",
-      "title": "%option3%",
+      "title": "%option_return%",
       "data": { "id": 3 }
     }
   ]

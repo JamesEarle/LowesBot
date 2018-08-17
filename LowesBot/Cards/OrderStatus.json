@@ -4,29 +4,58 @@
   "version": "1.0",
   "body": [
     {
-      "type": "Image",
-      "url": "https://www.lowes.com/images/logos/2016_lowes_logo/lowes_logo_pms_280/Lowes_logo_pms_280.jpg",
-      "size": "medium"
-    },
-    {
-      "type": "TextBlock",
-      "text": "%prompt1&"
-    },
-    {
-      "type": "TextBlock",
-      "text": "%orderNumber&"
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "Image",
+              "url": "%value_image%",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "%prompt_title%"
+            },
+            {
+              "type": "FactSet",
+              "facts": [
+                {
+                  "title": "%prompt_number%",
+                  "value": "%value_number%"
+                },
+                {
+                  "title": "%prompt_date%",
+                  "value": "%value_date%"
+                },
+                {
+                  "title": "%prompt_status%",
+                  "value": "%value_status%"
+                },
+                {
+                  "title": "%prompt_amount%",
+                  "value": "%value_amount%"
+                }
+              ]
+            },
+            {
+              "type": "TextBlock",
+              "text": "%value_details%",
+              "wrap": "true"
+            }
+          ]
+        }
+      ]
     }
   ],
   "actions": [
-    {
-      "type": "Action.Submit",
-      "title": "%option1%",
-      "data": { "id": 1 }
-    },
-    {
-      "type": "Action.Submit",
-      "title": "%option2%",
-      "data": { "id": 2 }
-    }
   ]
 }

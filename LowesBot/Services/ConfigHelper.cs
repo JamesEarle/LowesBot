@@ -11,10 +11,12 @@ namespace LowesBot.Services
         public static string LuisKey => Read("LuisKey");
         public static string LuisUrl => Read("LuisUrl");
         public static double LuisScore => double.Parse(Read("LuisScore"));
+        public static string MapKey => Read("MapKey");
 
         private static string Read(string key)
         {
-            return WebConfigurationManager.AppSettings["key"];
+            var x = WebConfigurationManager.AppSettings[key];
+            return x;
         }
     }
 }

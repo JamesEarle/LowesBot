@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
+using LowesBot.Services;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Location;
 using Microsoft.Bot.Connector;
@@ -13,13 +14,44 @@ namespace LowesBot.Dialogs
     [Serializable]
     public class FindStoreDialog :  IDialog<object>
     {
-        private const string AzureMapsKey = "9tTbSzD-t9Oc4DTDFie47oPbjDW6NhI2wmVUtn3EL9Q";
-
         public async Task StartAsync(IDialogContext context)
         {
-            await Respond(context);
+            await RequestLocationAsync(context);
+            // context.Wait(MessageReceivedAsync);
+        }
 
-            context.Wait(MessageReceivedAsync);
+        private Task RequestLocationAsync(IDialogContext context)
+        {
+            var apiKey = ConfigHelper.MapKey;
+            var prompt = "Where should I ship your order? Type or say an address.";
+            var locationDialog = new LocationDialog(apiKey, context.Activity.ChannelId, prompt);
+            context.Call(locationDialog, AfterLocationDialog);
+            return Task.CompletedTask;
+        }
+
+        private async Task AfterLocationDialog(IDialogContext context, IAwaitable<Place> result)
+        {
+            try
+            {
+                var place = await result;
+                if (place != null)
+                {
+                    var address = place.GetPostalAddress();
+                    var name = address != null ?
+                        $"{address.StreetAddress}, {address.Locality}, {address.Region}, {address.Country} ({address.PostalCode})" :
+                        "the pinned location";
+                    await context.PostAsync($"OK, I will ship it to {name}");
+                }
+                else
+                {
+                    await context.PostAsync("OK, cancelled");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
@@ -50,16 +82,16 @@ namespace LowesBot.Dialogs
             var userLocation = String.Empty;
 
             context.UserData.TryGetValue<string>("Location", out userLocation);
+            // context.UserData.SetValue<bool>("GetLocation", true);
 
             if (String.IsNullOrEmpty(userLocation))
             {
                 await context.PostAsync("Where are you located?");
-                context.UserData.SetValue<bool>("GetLocation", true);
             }
             else
             {
                 // Store in App Secrets later
-                var apiKey = AzureMapsKey;
+                var apiKey = ConfigHelper.MapKey;
                 var prompt = $"We found this location for {userLocation}, is this right?.";
                 var locationDialog = new LocationDialog(apiKey, message.ChannelId, prompt);
 

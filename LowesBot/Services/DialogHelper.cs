@@ -1,4 +1,5 @@
-﻿using LowesBot.Models;
+﻿using LowesBot.Dialogs;
+using LowesBot.Models;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System;
@@ -9,8 +10,16 @@ namespace LowesBot.Services
 {
     public static class DialogHelper
     {
-        public static async Task<bool> TryUsingLuis(IDialogContext context, string text, ResumeAfter<IMessageActivity> callback)
+        public static async Task<bool> TryUsingLuis(IDialogContext context, string text)
         {
+            if (string.IsNullOrEmpty(text))
+            {
+                return false;
+            }
+            else if (TryUsingText(context, text))
+            {
+                return true;
+            }
             var result = await LuisService.RecognizeAsync(text);
             if (result.Intents.Any()
                 && result.TopScoringIntent.Score >= ConfigHelper.LuisScore)
@@ -22,6 +31,23 @@ namespace LowesBot.Services
                 return false;
             }
             return true;
+        }
+
+        public static bool TryUsingText(IDialogContext context, string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return false;
+            }
+            else if (new[] { "quit", "exit", "home", "restart", "reset", "go home", "home" }.Contains(text.ToLower()))
+            {
+                context.EndConversation(string.Empty);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static async Task<bool> TryRecognizedFormat(IDialogContext context, string value, ResumeAfter<IMessageActivity> callback)

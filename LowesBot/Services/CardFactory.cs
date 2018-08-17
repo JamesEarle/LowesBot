@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Web.Hosting;
 using AdaptiveCards;
 using LowesBot.Dialogs;
@@ -17,9 +16,10 @@ namespace LowesBot.Services
             var path = HostingEnvironment.MapPath($"/cards/greeting.json");
             var json = File.ReadAllText(path);
             json = json
-                .Replace("%option1%", ResourceHelper.GetString("No"))
-                .Replace("%option2%", ResourceHelper.GetString("Yes"))
-                .Replace("%messagetext%", ResourceHelper.GetString("A1")); // "Is there anything else I can help you with?"
+                .Replace("%option_store%", ResourceHelper.GetString("B1"))
+                .Replace("%option_order%", ResourceHelper.GetString("B2"))
+                .Replace("%option_return%", ResourceHelper.GetString("B3"))
+                .Replace("%prompt_title%", "Anything else?"); // "Is there anything else I can help you with?"
             return AdaptiveCard.FromJson(json).Card;
         }
 
@@ -29,30 +29,24 @@ namespace LowesBot.Services
             var zone = TimeZoneHelper.DetermineZone(date);
             var state = LowesHelper.DetermineBusinessHourState(zone, date);
             var path = HostingEnvironment.MapPath($"/cards/greeting.json");
-            var json = File.ReadAllText(path);
+            var json = File.ReadAllText(path)
+                .Replace("%option_store%", ResourceHelper.GetString("B1"))
+                .Replace("%option_order%", ResourceHelper.GetString("B2"))
+                .Replace("%option_return%", ResourceHelper.GetString("B3"));
             switch (state)
             {
                 case BusinessHourState.Unknown:
                 case BusinessHourState.Closed:
                     json = json
-                        .Replace("%option1%", ResourceHelper.GetString("B1")) // Find a store.
-                        .Replace("%option2%", ResourceHelper.GetString("B2")) // Check order status
-                        .Replace("%option3%", ResourceHelper.GetString("B3")) // Returns & Exchanges
-                        .Replace("%greetingtext%", ResourceHelper.GetString("G1"));
+                        .Replace("%prompt_title%", ResourceHelper.GetString("G1"));
                     break;
                 case BusinessHourState.Closing:
                     json = json
-                        .Replace("%option1%", ResourceHelper.GetString("B1")) // Find a store.
-                        .Replace("%option2%", ResourceHelper.GetString("B2")) // Check order status
-                        .Replace("%option3%", ResourceHelper.GetString("B3")) // Returns & Exchanges
-                        .Replace("%greetingtext%", ResourceHelper.GetString("G2"));
+                        .Replace("%prompt_title%", ResourceHelper.GetString("G2"));
                     break;
                 case BusinessHourState.Open:
                     json = json
-                        .Replace("%option1%", ResourceHelper.GetString("B1")) // Find a store.
-                        .Replace("%option2%", ResourceHelper.GetString("B2")) // Check order status
-                        .Replace("%option3%", ResourceHelper.GetString("B3")) // Returns & Exchanges
-                        .Replace("%greetingtext%", ResourceHelper.GetString("G1"));
+                        .Replace("%prompt_title%", ResourceHelper.GetString("G1"));
                     break;
             }
             return AdaptiveCard.FromJson(json).Card;
@@ -73,8 +67,22 @@ namespace LowesBot.Services
         {
             var path = HostingEnvironment.MapPath($"/cards/orderstatus.json");
             var json = File.ReadAllText(path)
-                .Replace("%orderNumber%", data.Number) // #
-                .Replace("%prompt2%", "Order Number"); // Order Number (textblock)
+                .Replace("%prompt_title%", "Order details")
+
+                .Replace("%prompt_number%", "Number")
+                .Replace("%value_number%", data.Number)
+
+                .Replace("%prompt_date%", "Date")
+                .Replace("%value_date%", data.Date)
+
+                .Replace("%prompt_status%", "Status")
+                .Replace("%value_status%", data.Status)
+
+                .Replace("%prompt_amount%", "Amount")
+                .Replace("%value_amount%", data.Amount)
+
+                .Replace("%value_details%", data.Description)
+                .Replace("%value_image%", data.Image);
             return AdaptiveCard.FromJson(json).Card;
         }
 

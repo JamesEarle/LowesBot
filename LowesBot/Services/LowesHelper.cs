@@ -13,11 +13,11 @@ namespace LowesBot.Services
 
     public static class LowesHelper
     {
-        public static bool IsValidOrderNumber(string number) => Regex.IsMatch(number, "\\d{,9}");
+        public static bool IsValidOrderNumber(string number) => Regex.IsMatch(number, "^[0-9]{9}$");
 
-        public static bool IsValidPurchaseOrder(string number) => Regex.IsMatch(number, "\\d{,8}");
+        public static bool IsValidPurchaseOrder(string number) => Regex.IsMatch(number, "^[0-9]{8}$");
 
-        public static bool IsValidInvoiceNumber(string number) => Regex.IsMatch(number, "\\d{,5}");
+        public static bool IsValidInvoiceNumber(string number) => Regex.IsMatch(number, "^[0-9]{5}$");
 
         public static BusinessHourState DetermineBusinessHourState(TimeZoneName zone, DateTimeOffset? date)
         {
