@@ -15,14 +15,14 @@ namespace LowesBot.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
-            try { context.Call(new RootDialog(), ResumeAsync); }
-            catch (Exception ex) { await ShowExceptionAsync(context, ex); }
+            //try { context.Call(new RootDialog(null), ResumeAsync); }
+            //catch (Exception ex) { await ShowExceptionAsync(context, ex); }
         }
 
         private async Task ResumeAsync(IDialogContext context, IAwaitable<object> result)
         {
-            try { context.Done(await result); }
-            catch (Exception ex) { await ShowExceptionAsync(context, ex); }
+            //try { context.Done(await result); }
+            //catch (Exception ex) { await ShowExceptionAsync(context, ex); }
         }
 
         private async Task ShowExceptionAsync(IDialogContext context, Exception ex)

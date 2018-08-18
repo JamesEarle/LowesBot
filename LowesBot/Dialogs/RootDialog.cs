@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using LowesBot.Models;
 using LowesBot.Services;
 using Microsoft.Bot.Builder.Dialogs;
@@ -13,6 +14,13 @@ namespace LowesBot.Dialogs
     public class RootDialog : ICardDialog
     {
         int _prompts = 0;
+        private Country _country;
+
+        public RootDialog(HttpRequest request)
+        {
+            var language = request.UserLanguages[0];
+            _country = LowesHelper.DetermineCountry(language);
+        }
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -22,7 +30,7 @@ namespace LowesBot.Dialogs
         public async Task SendCardAsync(IDialogContext context)
         {
             var card = (++_prompts == 1)
-                ? CardFactory.GetGreetingCard(context)
+                ? CardFactory.GetGreetingCard(context, _country)
                 : CardFactory.GetAnythingElseCard();
             await context.PostAsync(card);
             context.Wait(ResumeAfterCardAsync);

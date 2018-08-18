@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using LowesBot.Dialogs;
 using LowesBot.Services;
@@ -20,10 +21,10 @@ namespace LowesBot
             {
                 case ActivityTypes.Message:
                     await SimulateTypingAsync(activity, 1000);
-                    await Conversation.SendAsync(activity, () => new RootDialog());
+                    await Conversation.SendAsync(activity, () => new RootDialog(HttpContext.Current.Request));
                     break;
                 case ActivityTypes.ConversationUpdate when (FirstTime(activity)):
-                    await Conversation.SendAsync(activity, () => new RootDialog());
+                    await Conversation.SendAsync(activity, () => new RootDialog(HttpContext.Current.Request));
                     break;
                 case ActivityTypes.ConversationUpdate:
                 case ActivityTypes.ContactRelationUpdate:

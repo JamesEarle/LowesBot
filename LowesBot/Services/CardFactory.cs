@@ -23,11 +23,12 @@ namespace LowesBot.Services
             return AdaptiveCard.FromJson(json).Card;
         }
 
-        public static AdaptiveCard GetGreetingCard(IDialogContext context)
+        public static AdaptiveCard GetGreetingCard(IDialogContext context, Country country)
         {
-            var date = DateTime.Now;
-            var zone = TimeZoneHelper.DetermineZone(date);
-            var state = LowesHelper.DetermineBusinessHourState(zone, date);
+            var date = context.Activity.LocalTimestamp;
+            var zone = TimeZoneHelper.DetermineZone(date, country);
+
+            var state = LowesHelper.DetermineBusinessHourState(zone, date, country);
             var path = HostingEnvironment.MapPath($"/cards/greeting.json");
             var json = File.ReadAllText(path)
                 .Replace("%option_store%", ResourceHelper.GetString("B1"))

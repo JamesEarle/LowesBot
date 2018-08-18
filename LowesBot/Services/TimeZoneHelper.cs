@@ -45,16 +45,33 @@ namespace LowesBot.Services
         16/08/2018 00:00:00 -10:30 = Unknown
         */
 
-        public static TimeZoneName DetermineZone(DateTimeOffset? date)
+        public static TimeZoneName DetermineZone(DateTimeOffset? date, Country country)
         {
             if (!date.HasValue)
             {
                 return TimeZoneName.Unknown;
             }
 
-            foreach (var zone in ((TimeZoneName[])Enum.GetValues(typeof(TimeZoneName))).Where(x => x != TimeZoneName.Unknown))
+            switch (country)
             {
-                if (TestOffset(zone)) return zone;
+                case Country.UnitedStates:
+                    foreach (var zone in new[] {  TimeZoneName.Eastern, TimeZoneName.Central, TimeZoneName.Mountain, TimeZoneName.Pacific, TimeZoneName.Alaskan, TimeZoneName.Hawaiian, })
+                    {
+                        if (TestOffset(zone)) return zone;
+                    }
+                    break;
+                case Country.Canada: 
+                    foreach (var zone in new[] { TimeZoneName.Newfoundland, TimeZoneName.Atlantic, TimeZoneName.Eastern, TimeZoneName.Central, TimeZoneName.Mountain, TimeZoneName.Pacific, })
+                    {
+                        if (TestOffset(zone)) return zone;
+                    }
+                    break;
+                case Country.Mexico: 
+                    foreach (var zone in new[] { TimeZoneName.Central, TimeZoneName.Mountain, TimeZoneName.Pacific })
+                    {
+                        if (TestOffset(zone)) return zone;
+                    }
+                    break;
             }
             return TimeZoneName.Unknown;
 
@@ -71,15 +88,21 @@ namespace LowesBot.Services
             {
                 switch (zone)
                 {
+                    // united states-specific
                     case TimeZoneName.Hawaiian: return TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time");
                     case TimeZoneName.Alaskan: return TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time");
                     case TimeZoneName.Pacific: return TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
                     case TimeZoneName.Mountain: return TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time");
                     case TimeZoneName.Central: return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
                     case TimeZoneName.Eastern: return TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+
                     // cananda-specific
                     case TimeZoneName.Atlantic: return TimeZoneInfo.FindSystemTimeZoneById("Atlantic Standard Time");
                     case TimeZoneName.Newfoundland: return TimeZoneInfo.FindSystemTimeZoneById("Newfoundland Standard Time");
+
+                    // mexico
+                    // do we support southwest?
+
                     case TimeZoneName.Unknown: throw new NotSupportedException("TimeZone.Unknown");
                     default: throw new TimeZoneNotFoundException();
                 }

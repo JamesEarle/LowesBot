@@ -167,6 +167,7 @@
     <Compile Include="Dialogs\ICardDialog.cs" />
     <Compile Include="Dialogs\ExceptionDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
+    <Compile Include="Models\UserData.cs" />
     <Compile Include="Services\LocationHelper.cs" />
     <Compile Include="Dialogs\OrderNumberDialog.cs" />
     <Compile Include="Models\OrderData.cs" />
