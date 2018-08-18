@@ -112,7 +112,7 @@ namespace LowesBot.Dialogs
         {
             if (await answer)
             {
-                await SendCardAsync(context);
+                await StartAsync(context);
             }
             else
             {

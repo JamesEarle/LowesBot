@@ -82,7 +82,7 @@ namespace LowesBot.Dialogs
         {
             if (await DialogHelper.TryRecognizedFormat(context, text, ResumeAfterChildDialog))
             {
-                await SendCardAsync(context);
+                await StartAsync(context);
             }
             else if (DialogHelper.TryUsingText(context, text))
             {
@@ -90,18 +90,18 @@ namespace LowesBot.Dialogs
             }
             else if (await DialogHelper.TryUsingLuis(context, text))
             {
-                await SendCardAsync(context);
+                await StartAsync(context);
             }
             else
             {
                 await context.PostAsync("Sorry, I don't understand.");
-                await SendCardAsync(context);
+                await StartAsync(context);
             }
         }
 
         public async Task ResumeAfterChildDialog(IDialogContext context, IAwaitable<object> result)
         {
-            await SendCardAsync(context);
+            await StartAsync(context);
         }
 
         public void ExitDialog(IDialogContext context, object value = null)
