@@ -1,0 +1,50 @@
+﻿{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "Image",
+          "url": "%value_image%",
+          "size": "medium"
+        },
+        {
+          "type": "TextBlock",
+          "size": "large",
+          "text": "%value_name%" 
+        },
+        {
+          "type": "TextBlock",
+          "size": "medium",
+          "text": "%value_address%" 
+        },
+        {
+              "type": "FactSet",
+              "facts": [
+                {
+                  "title": "%prompt_distance%",
+                  "value": "%value_distance%"
+                },
+                {
+                  "title": "%prompt_phone%",
+                  "value": "%value_phone%"
+                },
+                {
+                  "title": "%prompt_hours%",
+                  "value": "%value_hours%"
+                }
+              ]
+            },
+        {
+          "type": "Button",
+          "wrap": "true"
+        }
+      ]
+    }
+  ],
+  "actions": [
+  ]
+} 

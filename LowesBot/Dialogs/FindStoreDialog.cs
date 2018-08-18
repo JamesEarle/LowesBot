@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -21,21 +20,21 @@ namespace LowesBot.Dialogs
     {
         public async Task StartAsync(IDialogContext context)
         {
-            if (UserData.TryGetLocation(context, out var place))
+            if (UserData.Location.TryRead(context, out var place))
             {
                 await VerifySavedLocationAsync(context, place);
             }
             else
             {
-                await RequestLocationAsync(context);
+                await RequestUserLocationAsync(context);
             }
         }
 
-        #region VerifySavedLocation
+        #region VerifyUserSavedLocation
 
         private Task VerifySavedLocationAsync(IDialogContext context, Place place)
         {
-            PromptDialog.Confirm(context, AfterSavedVerifyLocationAsync, $"Is {place.ToString()} still your location?");
+            PromptDialog.Confirm(context, AfterSavedVerifyLocationAsync, $"Is {place.Name} still your location?");
             return Task.CompletedTask;
         }
 
@@ -43,53 +42,88 @@ namespace LowesBot.Dialogs
         {
             if (await result)
             {
-                await SearchForStoresAsync(context);
+                await ShowStoresAsync(context);
             }
             else
             {
-                await RequestLocationAsync(context);
+                await RequestUserLocationAsync(context);
             }
         }
 
         #endregion
 
-        #region RequestLocation
+        #region RequestUserLocation
 
-        private Task RequestLocationAsync(IDialogContext context)
+        private Task RequestUserLocationAsync(IDialogContext context)
         {
-            LocationHelper.Ask(context, AfterRequestLocationAsync);
+            LocationHelper.Ask(context, AfterRequestUserLocationAsync);
             return Task.CompletedTask;
         }
 
-        private async Task AfterRequestLocationAsync(IDialogContext context, IAwaitable<Place> result)
+        private async Task AfterRequestUserLocationAsync(IDialogContext context, IAwaitable<Place> result)
         {
             try
             {
                 var place = await result;
                 if (place != null)
                 {
-                    var address = place.GetPostalAddress();
-                    UserData.SetLocation(context, place);
+                    if (!UserData.Location.HasValue(context))
+                    {
+                        UserData.Location.Write(context, place);
+                    }
+                    await ShowStoresAsync(context);
                 }
                 else
                 {
-                    await context.PostAsync("OK, cancelled");
+                    context.Done(string.Empty);
                 }
 
             }
             catch (Exception ex)
             {
                 await context.PostAsync(ex.Message);
-                throw;
+                context.Done(string.Empty);
             }
         }
 
         #endregion
 
-        private Task SearchForStoresAsync(IDialogContext context)
+        private async Task ShowStoresAsync(IDialogContext context)
         {
-            throw new NotImplementedException();
+            if (UserData.Location.TryRead(context, out var place))
+            {
+                var stores = StoreService.FindStores(place);
+                if (stores.Any())
+                {
+                    var cards = CardFactory.GetStoreCards(stores.ToArray());
+                    var carousel = cards.ToCarousel(context);
+                    await context.PostAsync(carousel);
+                    PromptDialog.Confirm(context, AfterShowStoresAsync, "Would you like to search again?");
+                }
+                else
+                {
+                    await context.PostAsync("No stores found.");
+                    context.Done(string.Empty);
+                }
+            }
+            else
+            {
+                await context.PostAsync("Place not found.");
+                context.Done(string.Empty);
+            }
         }
 
+        private async Task AfterShowStoresAsync(IDialogContext context, IAwaitable<bool> result)
+        {
+            if (await result)
+            {
+                await RequestUserLocationAsync(context);
+            }
+            else
+            {
+                context.Done(string.Empty);
+            }
+        }
     }
 }
+

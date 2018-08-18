@@ -6,23 +6,40 @@ namespace LowesBot.Models
 {
     public static class UserData
     {
-        public static bool TryGetLocation(IDialogContext context, out Place place)
+        public static UserDataProperty<Place> Location { get; set; } = new UserDataProperty<Place>(nameof(Location));
+
+        public class UserDataProperty<T>
         {
-            if (context.UserData.TryGetValue<string>("Location", out var json))
+            private string _key;
+
+            public UserDataProperty(string key)
             {
-                place = JsonConvert.DeserializeObject<Place>(json);
-                return true;
+                _key = key;
             }
-            else
+
+            public bool HasValue(IDialogContext context)
             {
-                place = default(Place);
-                return false;
+                return context.UserData.ContainsKey(_key);
             }
-        }
-        public static void SetLocation(IDialogContext context, Place place)
-        {
-            var json = JsonConvert.SerializeObject(place);
-            context.UserData.SetValue("Location", json);
+
+            public bool TryRead(IDialogContext context, out T value)
+            {
+                if (context.UserData.TryGetValue<string>(_key, out var json))
+                {
+                    value = JsonConvert.DeserializeObject<T>(json);
+                    return true;
+                }
+                else
+                {
+                    value = default(T);
+                    return false;
+                }
+            }
+            public void Write(IDialogContext context, T value)
+            {
+                var json = JsonConvert.SerializeObject(value);
+                context.UserData.SetValue(_key, json);
+            }
         }
     }
 }

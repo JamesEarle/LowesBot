@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web.Hosting;
 using AdaptiveCards;
@@ -11,6 +12,28 @@ namespace LowesBot.Services
 {
     public static class CardFactory
     {
+        public static IEnumerable<AdaptiveCard> GetStoreCards(params StoreInfo[] stores)
+        {
+            foreach (var store in stores)
+            {
+                var path = HostingEnvironment.MapPath($"/cards/storeinfo.json");
+                var json = File.ReadAllText(path);
+                json = json
+                    .Replace("%value_image%", store.Image)
+                    .Replace("%prompt_name%", "Name")
+                    .Replace("%value_name%", store.Name)
+                    .Replace("%prompt_distance%", "Distance")
+                    .Replace("%value_distance%", store.Distance)
+                    .Replace("%prompt_address%", "Address")
+                    .Replace("%value_address%", store.Address)
+                    .Replace("%prompt_phone%", "Phone")
+                    .Replace("%value_phone%", store.Phone)
+                    .Replace("%prompt_hours%", "Hours")
+                    .Replace("%value_hours%", store.Hours);
+                yield return AdaptiveCard.FromJson(json).Card;
+            }
+        }
+
         public static AdaptiveCard GetAnythingElseCard()
         {
             var path = HostingEnvironment.MapPath($"/cards/greeting.json");
