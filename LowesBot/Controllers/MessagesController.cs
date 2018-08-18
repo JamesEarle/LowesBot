@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using LowesBot.Dialogs;
+using LowesBot.Services;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 
@@ -12,55 +14,60 @@ namespace LowesBot
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        /// <summary>
-        /// POST: api/Messages
-        /// Receive a message from a user and reply to it
-        /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message)
+            switch (activity.Type)
             {
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                case ActivityTypes.Message:
+                    await SimulateTypingAsync(activity, 1000);
+                    await Conversation.SendAsync(activity, () => new RootDialog());
+                    break;
+                case ActivityTypes.ConversationUpdate when (FirstTime(activity)):
+                    await Conversation.SendAsync(activity, () => new RootDialog());
+                    break;
+                case ActivityTypes.ConversationUpdate:
+                case ActivityTypes.ContactRelationUpdate:
+                case ActivityTypes.Typing:
+                case ActivityTypes.Ping:
+                case ActivityTypes.EndOfConversation:
+                case ActivityTypes.Event:
+                case ActivityTypes.Invoke:
+                case ActivityTypes.DeleteUserData:
+                case ActivityTypes.MessageUpdate:
+                case ActivityTypes.MessageDelete:
+                case ActivityTypes.InstallationUpdate:
+                case ActivityTypes.MessageReaction:
+                case ActivityTypes.Suggestion:
+                case ActivityTypes.Trace:
+                default:
+                    // do nothing
+                    break;
+            }
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        private async Task SimulateTypingAsync(Activity activity, int delay)
+        {
+            var reply = activity.CreateReply();
+            reply.Type = ActivityTypes.Typing;
+            reply.Text = null;
+            var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+            await connector.Conversations.ReplyToActivityAsync(reply);
+            await Task.Delay(delay);
+
+        }
+
+        private bool FirstTime(Activity activity)
+        {
+            if (activity.MembersAdded == null || !activity.MembersAdded.Any())
+            {
+                return false;
             }
             else
             {
-                HandleSystemMessage(activity);
+                var first = activity.MembersAdded.First();
+                return Equals(activity.Recipient.Id, first.Id);
             }
-            var response = Request.CreateResponse(HttpStatusCode.OK);
-            return response;
-        }
-
-        private Activity HandleSystemMessage(Activity activity)
-        {
-            if (activity.Type == ActivityTypes.DeleteUserData)
-            {
-                // Implement user deletion here
-                // If we handle user deletion, return a real message
-            }
-            else if (activity.Type == ActivityTypes.ConversationUpdate)
-            {
-                if (activity.MembersAdded.Any(o => o.Id == activity.Recipient.Id))
-                {
-                    Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
-                }
-                // Handle conversation state changes, like members being added and removed
-                // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
-                // Not available in all channels
-            }
-            else if (activity.Type == ActivityTypes.ContactRelationUpdate)
-            {
-                // Handle add/remove from contact lists
-                // Activity.From + Activity.Action represent what happened
-            }
-            else if (activity.Type == ActivityTypes.Typing)
-            {
-                // Handle knowing tha the user is typing
-            }
-            else if (activity.Type == ActivityTypes.Ping)
-            {
-            }
-
-            return null;
         }
     }
 }

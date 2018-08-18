@@ -4,32 +4,86 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
+using LowesBot.Models;
 using LowesBot.Services;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Location;
 using Microsoft.Bot.Connector;
+using Newtonsoft.Json;
+
+namespace LowesBot.Models
+{
+    public static class User
+    {
+        public static bool TryGetLocation(IDialogContext context, out Place place)
+        {
+            if (context.UserData.TryGetValue<string>("Location", out var json))
+            {
+                place = JsonConvert.DeserializeObject<Place>(json);
+                return true;
+            }
+            else
+            {
+                place = default(Place);
+                return false;
+            }
+        }
+        public static void SetLocation(IDialogContext context, Place place)
+        {
+            var json = JsonConvert.SerializeObject(place);
+            context.UserData.SetValue("Location", json);
+        }
+    }
+}
 
 namespace LowesBot.Dialogs
 {
     [Serializable]
-    public class FindStoreDialog :  IDialog<object>
+    public class FindStoreDialog : IDialog<object>
     {
         public async Task StartAsync(IDialogContext context)
         {
-            await RequestLocationAsync(context);
-            // context.Wait(MessageReceivedAsync);
+            if (User.TryGetLocation(context, out var place))
+            {
+                await VerifySavedLocationAsync(context, place);
+            }
+            else
+            {
+                await RequestLocationAsync(context);
+            }
         }
 
-        private Task RequestLocationAsync(IDialogContext context)
+        #region VerifySavedLocation
+
+        private Task VerifySavedLocationAsync(IDialogContext context, Place place)
         {
-            var apiKey = ConfigHelper.MapKey;
-            var prompt = "Where should I ship your order? Type or say an address.";
-            var locationDialog = new LocationDialog(apiKey, context.Activity.ChannelId, prompt);
-            context.Call(locationDialog, AfterLocationDialog);
+            PromptDialog.Confirm(context, AfterSavedVerifyLocationAsync, $"Is {place.ToString()} still your location?");
             return Task.CompletedTask;
         }
 
-        private async Task AfterLocationDialog(IDialogContext context, IAwaitable<Place> result)
+        private async Task AfterSavedVerifyLocationAsync(IDialogContext context, IAwaitable<bool> result)
+        {
+            if (await result)
+            {
+                await SearchForStoresAsync(context);
+            }
+            else
+            {
+                await RequestLocationAsync(context);
+            }
+        }
+
+        #endregion
+
+        #region RequestLocation
+
+        private Task RequestLocationAsync(IDialogContext context)
+        {
+            LocationHelper.Ask(context, AfterRequestLocationAsync);
+            return Task.CompletedTask;
+        }
+
+        private async Task AfterRequestLocationAsync(IDialogContext context, IAwaitable<Place> result)
         {
             try
             {
@@ -37,10 +91,7 @@ namespace LowesBot.Dialogs
                 if (place != null)
                 {
                     var address = place.GetPostalAddress();
-                    var name = address != null ?
-                        $"{address.StreetAddress}, {address.Locality}, {address.Region}, {address.Country} ({address.PostalCode})" :
-                        "the pinned location";
-                    await context.PostAsync($"OK, I will ship it to {name}");
+                    User.SetLocation(context, place);
                 }
                 else
                 {
@@ -50,59 +101,17 @@ namespace LowesBot.Dialogs
             }
             catch (Exception ex)
             {
+                await context.PostAsync(ex.Message);
                 throw;
             }
         }
 
-        public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
+        #endregion
+
+        private Task SearchForStoresAsync(IDialogContext context)
         {
-            var message = await argument;
-
-            var userLocation = String.Empty;
-            var getLocation = false;
-
-            context.UserData.TryGetValue<string>("Location", out userLocation);
-            context.UserData.TryGetValue<bool>("GetLocation", out getLocation);
-
-            if (getLocation)
-            {
-                userLocation = message.Text;
-                context.UserData.SetValue<string>("Location", userLocation);
-                context.UserData.SetValue<bool>("GetLocation", false);
-            }
-
-            await Respond(context, message);
-
-            // call next dialog to show locations near them
-            context.Done(message);
+            throw new NotImplementedException();
         }
 
-        private static async Task Respond(IDialogContext context, IMessageActivity message = null)
-        {
-            var userLocation = String.Empty;
-
-            context.UserData.TryGetValue<string>("Location", out userLocation);
-            // context.UserData.SetValue<bool>("GetLocation", true);
-
-            if (String.IsNullOrEmpty(userLocation))
-            {
-                await context.PostAsync("Where are you located?");
-            }
-            else
-            {
-                // Store in App Secrets later
-                var apiKey = ConfigHelper.MapKey;
-                var prompt = $"We found this location for {userLocation}, is this right?.";
-                var locationDialog = new LocationDialog(apiKey, message.ChannelId, prompt);
-
-                context.Call(locationDialog, (dialogContext, result) =>
-                {
-                    return null;
-                });
-                // Find Location and verify using Locatioon, prompt for "is this correct?"
-                //await context.PostAsync($"We found this location for {userLocation}, is this right?.");
-                // show embedded map with Location results.
-            }
-        }
     }
 }
