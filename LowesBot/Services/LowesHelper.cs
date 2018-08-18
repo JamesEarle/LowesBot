@@ -19,7 +19,7 @@ namespace LowesBot.Services
 
         public static bool IsValidInvoiceNumber(string number) => Regex.IsMatch(number, "^[0-9]{5}$");
 
-        public static BusinessHourState DetermineBusinessHourState(TimeZoneName zone, DateTimeOffset? date)
+        public static BusinessHourState DetermineBusinessHourState(TimeZoneName zone, DateTimeOffset? date, string locale)
         {
             if (!date.HasValue)
             {
@@ -28,12 +28,23 @@ namespace LowesBot.Services
 
             if (date.Value.Date.Equals(HolidayHelper.Christmas)
                 || date.Value.Date.Equals(HolidayHelper.NewYears)
-                || date.Value.Date.Equals(HolidayHelper.UnitedStates.Independence)
-                || date.Value.Date.Equals(HolidayHelper.UnitedStates.Thanksgiving)
-                || date.Value.Date.Equals(HolidayHelper.UnitedStates.LaborDay)
-                || date.Value.Date.Equals(HolidayHelper.UnitedStates.MemorialDay)
-                || date.Value.Date.Equals(HolidayHelper.UnitedStates.Independence)
-                || date.Value.Date.Equals(HolidayHelper.Canada.Independence))
+                || date.Value.Date.Equals(HolidayHelper.Easter)
+
+                || (Equals(locale, "us") & date.Value.Date.Equals(HolidayHelper.UnitedStates.Independence))
+                || (Equals(locale, "uw") & date.Value.Date.Equals(HolidayHelper.UnitedStates.Thanksgiving))
+                || (Equals(locale, "us") & date.Value.Date.Equals(HolidayHelper.UnitedStates.LaborDay))
+                || (Equals(locale, "us") & date.Value.Date.Equals(HolidayHelper.UnitedStates.MemorialDay))
+                || (Equals(locale, "us") & date.Value.Date.Equals(HolidayHelper.UnitedStates.Independence))
+
+                || (Equals(locale, "mx") & date.Value.Date.Equals(HolidayHelper.Mexico.BenitoJuarez))
+                || (Equals(locale, "mx") & date.Value.Date.Equals(HolidayHelper.Mexico.Constitution))
+                || (Equals(locale, "mx") & date.Value.Date.Equals(HolidayHelper.Mexico.Independence))
+                || (Equals(locale, "mx") & date.Value.Date.Equals(HolidayHelper.Mexico.LaborDay))
+                || (Equals(locale, "mx") & date.Value.Date.Equals(HolidayHelper.Mexico.Revolution))
+
+                || (Equals(locale, "ca") & date.Value.Date.Equals(HolidayHelper.Canada.Independence))
+                || (Equals(locale, "ca") & date.Value.Date.Equals(HolidayHelper.Canada.Thanksgiving))
+                || (Equals(locale, "ca") & date.Value.Date.Equals(HolidayHelper.Canada.LabourDay)))
             {
                 return BusinessHourState.Closed;
             }
