@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using LowesBot.Models;
 using LowesBot.Services;
 using Microsoft.Bot.Builder.Dialogs;
@@ -25,6 +27,13 @@ namespace LowesBot.Services
         public static async Task ShowInvoiceStatusAsync(IDialogContext context, InvoiceData data, ResumeAfter<IMessageActivity> callback)
         {
             var card = CardFactory.GetInvoiceStatusCard(data);
+            await context.PostAsync(card);
+            context.Wait(callback);
+        }
+
+        internal static async Task ShowStoreContactCardAsync(IDialogContext context, StoreInfo storeInfo, ResumeAfter<IMessageActivity> callback)
+        {
+            var card = CardFactory.GetStoreCards(storeInfo).First();
             await context.PostAsync(card);
             context.Wait(callback);
         }

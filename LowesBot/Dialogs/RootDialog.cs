@@ -14,7 +14,7 @@ namespace LowesBot.Dialogs
     public class RootDialog : ICardDialog
     {
         int _prompts = 0;
-        private Country _country;
+        private readonly Country _country;
 
         public RootDialog(HttpRequest request)
         {
@@ -61,7 +61,7 @@ namespace LowesBot.Dialogs
             }
         }
 
-        public Task HandleButtonInput(IDialogContext context, string json, ButtonData button)
+        public async Task HandleButtonInput(IDialogContext context, string json, ButtonData button)
         {
             if (button.Id == 1)
             {
@@ -73,9 +73,8 @@ namespace LowesBot.Dialogs
             }
             else if (button.Id == 3)
             {
-                context.Call(new ReturnsAndExchangesDialog(), ResumeAfterChildDialog);
+                await CardService.ShowStoreContactCardAsync(context, new StoreInfo(), ResumeAfterChildDialog);
             }
-            return Task.CompletedTask;
         }
 
         public async Task HandleFreeformInput(IDialogContext context, string text)

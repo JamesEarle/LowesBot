@@ -20,16 +20,19 @@ namespace LowesBot.Services
                 var json = File.ReadAllText(path);
                 json = json
                     .Replace("%value_image%", store.Image)
-                    .Replace("%prompt_name%", "Name")
                     .Replace("%value_name%", store.Name)
-                    .Replace("%prompt_distance%", "Distance")
                     .Replace("%value_distance%", store.Distance)
-                    .Replace("%prompt_address%", "Address")
                     .Replace("%value_address%", store.Address)
-                    .Replace("%prompt_phone%", "Phone")
+
+                    .Replace("%prompt_department%", "Customer Service")
                     .Replace("%value_phone%", store.Phone)
-                    .Replace("%prompt_hours%", "Hours")
-                    .Replace("%value_hours%", store.Hours);
+                    .Replace("%value_hours%", store.Hours)
+
+                    .Replace("%value_manager_name%", store.ManagerName)
+                    .Replace("%value_manager_image%", store.ManagerImage)
+                    .Replace("%value_manager_title%", store.ManagerTitle)
+                    .Replace("%value_manager_phone%", store.ManagerPhone);
+
                 yield return AdaptiveCard.FromJson(json).Card;
             }
         }
