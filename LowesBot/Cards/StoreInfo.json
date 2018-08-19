@@ -14,37 +14,92 @@
         {
           "type": "TextBlock",
           "size": "large",
-          "text": "%value_name%" 
+          "text": "%value_name%"
         },
         {
           "type": "TextBlock",
           "size": "medium",
-          "text": "%value_address%" 
+          "spacing": "none",
+          "text": "%value_address%"
         },
         {
-              "type": "FactSet",
-              "facts": [
-                {
-                  "title": "%prompt_distance%",
-                  "value": "%value_distance%"
-                },
-                {
-                  "title": "%prompt_phone%",
-                  "value": "%value_phone%"
-                },
-                {
-                  "title": "%prompt_hours%",
-                  "value": "%value_hours%"
-                }
-              ]
-            },
-        {
-          "type": "Button",
-          "wrap": "true"
+          "type": "TextBlock",
+          "size": "small",
+          "spacing": "none",
+          "text": "%value_distance%"
         }
       ]
     }
   ],
   "actions": [
+    {
+      "type": "Action.ShowCard",
+      "title": "Contact Store",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "width": "1",
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "%prompt_department%"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "spacing": "none",
+                    "text": "%value_phone%"
+                  },
+
+                  {
+                    "type": "TextBlock",
+                    "spacing": "none",
+                    "text": "%value_hours%"
+                  }
+                ]
+              },
+              {
+                "type": "Column",
+                "width": "auto",
+                "items": [
+                  {
+                    "type": "Image",
+                    "url": "%value_manager_image%",
+                    "size": "small",
+                    "style": "person"
+                  }
+                ]
+              },
+              {
+                "type": "Column",
+                "width": "1",
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "%value_manager_name%",
+                    "weight": "bolder"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "spacing": "none",
+                    "text": "%value_manager_title%"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "spacing": "none",
+                    "text": "%value_manager_phone%"
+                  }
+                ]
+              }
+
+            ]
+          }
+        ]
+      }
+    }
   ]
-} 
+}
