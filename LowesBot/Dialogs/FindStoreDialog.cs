@@ -46,6 +46,7 @@ namespace LowesBot.Dialogs
             }
             else
             {
+                UserData.Location.Clear(context);
                 await RequestUserLocationAsync(context);
             }
         }

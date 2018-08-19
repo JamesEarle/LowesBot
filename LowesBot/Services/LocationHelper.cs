@@ -17,7 +17,7 @@ namespace LowesBot.Services
             {
                 prompt = "What is your location?";
             }
-            var dialog = new LocationDialog(_key, context.Activity.ChannelId, prompt);
+            var dialog = new LocationDialog(_key, context.Activity.ChannelId, prompt, LocationOptions.SkipFinalConfirmation | LocationOptions.SkipFavorites, LocationRequiredFields.None);
             context.Call(dialog, callback);
         }
     }
