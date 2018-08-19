@@ -4,29 +4,49 @@
   "version": "1.0",
   "body": [
     {
-      "type": "Container",
-      "items": [
+      "type": "ColumnSet",
+      "columns": [
         {
-          "type": "Image",
-          "url": "%value_image%",
-          "size": "medium"
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "Image",
+              "url": "%value_image%",
+              "size": "medium"
+            }
+          ]
         },
         {
-          "type": "TextBlock",
-          "size": "large",
-          "text": "%value_name%"
-        },
-        {
-          "type": "TextBlock",
-          "size": "medium",
-          "spacing": "none",
-          "text": "%value_address%"
-        },
-        {
-          "type": "TextBlock",
-          "size": "small",
-          "spacing": "none",
-          "text": "%value_distance%"
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "size": "large",
+              "weight": "bolder",
+              "text": "%value_name%"
+            },
+            {
+              "type": "TextBlock",
+              "size": "medium",
+              "spacing": "none",
+              "text": "%value_address1%"
+            },
+            {
+              "type": "TextBlock",
+              "size": "medium",
+              "spacing": "none",
+              "text": "%value_address2%"
+            },
+            {
+              "type": "TextBlock",
+              "size": "small",
+              "spacing": "none",
+              "weight": "lighter",
+              "text": "%value_distance%"
+            }
+          ]
         }
       ]
     }
@@ -101,5 +121,25 @@
         ]
       }
     }
+
+,
+    {
+      "type": "Action.ShowCard",
+      "title": "Map Store",
+      "card": 
+        {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "Image",
+              "url": "%value_map%",
+              "size": "stretch"
+            }
+          ]
+        
+      }
+    }
+
   ]
 }
+

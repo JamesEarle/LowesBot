@@ -22,7 +22,9 @@ namespace LowesBot.Services
                     .Replace("%value_image%", store.Image)
                     .Replace("%value_name%", store.Name)
                     .Replace("%value_distance%", store.Distance)
-                    .Replace("%value_address%", store.Address)
+                    .Replace("%value_address1%", store.Address1)
+                    .Replace("%value_address2%", store.Address2)
+                    .Replace("%value_map%", store.Map)
 
                     .Replace("%prompt_department%", "Customer Service")
                     .Replace("%value_phone%", store.Phone)
