@@ -12,7 +12,7 @@ namespace LowesBot.Services
 {
     public static class CardFactory
     {
-        public static IEnumerable<AdaptiveCard> GetStoreCards(params StoreInfo[] stores)
+        public static IEnumerable<AdaptiveCard> GetStoreCards(params StoreData[] stores)
         {
             foreach (var store in stores)
             {
@@ -56,7 +56,7 @@ namespace LowesBot.Services
             var date = context.Activity.LocalTimestamp;
             var zone = TimeZoneHelper.DetermineZone(date, country);
 
-            var state = LowesHelper.DetermineBusinessHourState(zone, date, country);
+            var state = BusinessRulesService.DetermineBusinessHourState(zone, date, country);
             var path = HostingEnvironment.MapPath($"/cards/greeting.json");
             var json = File.ReadAllText(path)
                 .Replace("%option_store%", ResourceHelper.GetString("B1"))
@@ -96,10 +96,9 @@ namespace LowesBot.Services
         {
             var path = HostingEnvironment.MapPath($"/cards/orderstatus.json");
             var json = File.ReadAllText(path)
-                .Replace("%prompt_title%", "Order details")
 
                 .Replace("%prompt_number%", "Number")
-                .Replace("%value_number%", data.Number)
+                .Replace("%value_number%", data.Number.ToString())
 
                 .Replace("%prompt_date%", "Date")
                 .Replace("%value_date%", data.Date)
@@ -111,7 +110,9 @@ namespace LowesBot.Services
                 .Replace("%value_amount%", data.Amount)
 
                 .Replace("%value_details%", data.Description)
-                .Replace("%value_image%", data.Image);
+                .Replace("%value_image%", data.Image)
+
+                .Replace("%option_details%", "Order details");
             return AdaptiveCard.FromJson(json).Card;
         }
 

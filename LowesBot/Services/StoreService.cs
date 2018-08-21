@@ -5,11 +5,11 @@ namespace LowesBot.Services
 {
     public static class StoreService
     {
-        public static IEnumerable<StoreInfo> FindStores(Place place)
+        public static IEnumerable<StoreData> FindStores(Place place)
         {
-            yield return new StoreInfo { Name = "Lowes Store #123", Distance = "1 mile" };
-            yield return new StoreInfo { Name = "Lowes Store #234", Distance = "5 miles" };
-            yield return new StoreInfo { Name = "Lowes Store #345", Distance = "10 miles" };
+            yield return new StoreData { Name = "Lowes Store #123", Distance = "1 mile" };
+            yield return new StoreData { Name = "Lowes Store #234", Distance = "5 miles" };
+            yield return new StoreData { Name = "Lowes Store #345", Distance = "10 miles" };
         }
     }
 }

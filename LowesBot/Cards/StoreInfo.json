@@ -120,26 +120,22 @@
           }
         ]
       }
-    }
-
-,
+    },
     {
       "type": "Action.ShowCard",
       "title": "Map Store",
-      "card": 
-        {
-          "type": "AdaptiveCard",
-          "body": [
-            {
-              "type": "Image",
-              "url": "%value_map%",
-              "size": "stretch"
-            }
-          ]
-        
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "Image",
+            "url": "%value_map%",
+            "size": "stretch"
+          }
+        ]
+
       }
     }
 
   ]
 }
-

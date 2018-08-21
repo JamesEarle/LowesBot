@@ -19,7 +19,7 @@ namespace LowesBot.Dialogs
         public RootDialog(HttpRequest request)
         {
             var language = request.UserLanguages[0];
-            _country = LowesHelper.DetermineCountry(language);
+            _country = BusinessRulesService.DetermineCountry(language);
         }
 
         public async Task StartAsync(IDialogContext context)
@@ -33,10 +33,10 @@ namespace LowesBot.Dialogs
                 ? CardFactory.GetGreetingCard(context, _country)
                 : CardFactory.GetAnythingElseCard();
             await context.PostAsync(card);
-            context.Wait(ResumeAfterCardAsync);
+            context.Wait(AfterSendCardAsync);
         }
 
-        public async Task ResumeAfterCardAsync(IDialogContext context, IAwaitable<object> result)
+        public async Task AfterSendCardAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
             if (!string.IsNullOrEmpty(activity.Text))
@@ -69,11 +69,11 @@ namespace LowesBot.Dialogs
             }
             else if (button.Id == 2)
             {
-                context.Call(new OrderNumberDialog(), ResumeAfterChildDialog);
+                context.Call(new OrderStatusDialog(), ResumeAfterChildDialog);
             }
             else if (button.Id == 3)
             {
-                await CardService.ShowStoreContactCardAsync(context, new StoreInfo(), ResumeAfterChildDialog);
+                await CardService.ShowStoreContactCardAsync(context, new StoreData(), ResumeAfterChildDialog);
             }
         }
 
@@ -83,9 +83,9 @@ namespace LowesBot.Dialogs
             {
                 await StartAsync(context);
             }
-            else if (DialogHelper.TryUsingText(context, text))
+            else if (DialogHelper.TryParseExit(text))
             {
-                // nothing
+                ExitDialog(context);
             }
             else if (await DialogHelper.TryUsingLuis(context, text))
             {

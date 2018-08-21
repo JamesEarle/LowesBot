@@ -16,10 +16,6 @@ namespace LowesBot.Services
             {
                 return false;
             }
-            else if (TryUsingText(context, text))
-            {
-                return true;
-            }
             var result = await LuisService.RecognizeAsync(text);
             if (result.Intents.Any()
                 && result.TopScoringIntent.Score >= ConfigHelper.LuisScore)
@@ -30,23 +26,19 @@ namespace LowesBot.Services
             {
                 return false;
             }
-            return true;
         }
 
-        public static bool TryUsingText(IDialogContext context, string text)
+        public static bool TryParseExit(object value)
         {
-            if (string.IsNullOrEmpty(text))
+            if (value == null
+                || string.IsNullOrEmpty(value.ToString()))
             {
                 return false;
-            }
-            else if (new[] { "quit", "exit", "home", "restart", "reset", "go home", "home" }.Contains(text.ToLower()))
-            {
-                context.EndConversation(string.Empty);
-                return true;
             }
             else
             {
-                return false;
+                return new[] { "quit", "exit", "home", "restart", "reset", "go home", "home", "stop" }
+                    .Contains(value.ToString().ToLower());
             }
         }
 
@@ -56,15 +48,15 @@ namespace LowesBot.Services
             {
                 return false;
             }
-            else if (LowesHelper.IsValidInvoiceNumber(value))
+            else if (BusinessRulesService.ValidateInvoiceNumber(value))
             {
                 await CardService.ShowInvoiceStatusAsync(context, new InvoiceData { Number = value }, callback);
             }
-            else if (LowesHelper.IsValidOrderNumber(value))
+            else if (BusinessRulesService.TryParseOrderNumber(value, out var orderNumber))
             {
-                await CardService.ShowOrderStatusAsync(context, new OrderData { Number = value }, callback);
+                await CardService.ShowOrderStatusCardAsync(context, new OrderData { Number = orderNumber }, callback);
             }
-            else if (LowesHelper.IsValidPurchaseOrder(value))
+            else if (BusinessRulesService.ValidatePurchaseOrderNumber(value))
             {
                 await CardService.ShowPurchaseOrderStatusAsync(context, new PurchaseOrderData { Number = value }, callback);
             }

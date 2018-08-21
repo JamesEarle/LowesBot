@@ -1,6 +1,6 @@
 ﻿namespace LowesBot.Models
 {
-    public class StoreInfo
+    public class StoreData
     {
         public string Name { get; set; } = "Lowes Store #123";
         public string Address1 { get; set; } = "123 West Main Street";

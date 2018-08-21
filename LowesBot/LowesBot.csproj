@@ -164,15 +164,17 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Dialogs\OrderNumberDialog.cs" />
+    <Compile Include="Services\BusinessRulesService.cs" />
     <Compile Include="Services\Extensions.cs" />
     <Compile Include="Dialogs\ICardDialog.cs" />
     <Compile Include="Dialogs\ExceptionDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
-    <Compile Include="Models\StoreInfo.cs" />
+    <Compile Include="Models\StoreData.cs" />
     <Compile Include="Services\StoreService.cs" />
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Services\LocationHelper.cs" />
-    <Compile Include="Dialogs\OrderNumberDialog.cs" />
+    <Compile Include="Dialogs\OrderStatusDialog.cs" />
     <Compile Include="Models\OrderData.cs" />
     <Compile Include="Models\OrderNumberFormData.cs" />
     <Compile Include="Services\CardFactory.cs" />
@@ -180,7 +182,6 @@
     <Compile Include="Services\ConfigHelper.cs" />
     <Compile Include="Models\InvoiceData.cs" />
     <Compile Include="Services\DialogHelper.cs" />
-    <Compile Include="Services\LowesHelper.cs" />
     <Compile Include="Models\ButtonData.cs" />
     <Compile Include="Dialogs\FindStoreDialog.cs" />
     <Compile Include="Dialogs\ReturnsAndExchangesDialog.cs" />

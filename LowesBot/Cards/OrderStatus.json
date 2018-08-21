@@ -22,10 +22,6 @@
           "width": "auto",
           "items": [
             {
-              "type": "TextBlock",
-              "text": "%prompt_title%"
-            },
-            {
               "type": "FactSet",
               "facts": [
                 {
@@ -57,6 +53,41 @@
     }
   ],
   "actions": [
+    {
+      "type": "Action.ShowCard",
+      "title": "%option_details%",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "separator": "true",
+            "text": "Hand saw"
+          },
+          {
+            "type": "TextBlock",
+            "separator": "true",
+            "text": "Specialty wrench"
+          },
+          {
+            "type": "TextBlock",
+            "separator": "true",
+            "text": "Pair of golves"
+          },
+          {
+            "type": "TextBlock",
+            "separator": "true",
+            "text": "Kitchen sink"
+          },
+          {
+            "type": "TextBlock",
+            "separator": "true",
+            "text": "Sand paper"
+          }
+        ]
+
+      }
+    }
 
   ]
 }

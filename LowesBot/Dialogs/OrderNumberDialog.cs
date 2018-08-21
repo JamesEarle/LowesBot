@@ -1,96 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using LowesBot.Models;
 using LowesBot.Services;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.Dialogs.Internals;
-using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
 
 namespace LowesBot.Dialogs
 {
-
     [Serializable]
-    internal class OrderNumberDialog : ICardDialog
+    internal class OrderNumberDialog : IDialog<OrderData>
     {
         public async Task StartAsync(IDialogContext context)
         {
-            await SendCardAsync(context);
+            await AskNumber(context, "What is your order number?");
         }
 
-        public async Task SendCardAsync(IDialogContext context)
+        private async Task AskNumber(IDialogContext context, string prompt)
         {
-            var card = CardFactory.GetOrderNumberCard();
-            await context.PostAsync(card);
-            context.Wait(ResumeAfterCardAsync);
+            await context.PostAsync(prompt);
+            context.Wait(AfterAskNumber);
         }
 
-        public async Task ResumeAfterCardAsync(IDialogContext context, IAwaitable<object> result)
-        {
-            var activity = await result as Activity;
-            if (!string.IsNullOrEmpty(activity.Text))
-            {
-                await HandleFreeformInput(context, activity.Text);
-            }
-            else if (!string.IsNullOrEmpty(activity.Value?.ToString()))
-            {
-                var value = activity.Value.ToString();
-                if (ButtonData.TryParse(value, out var button))
-                {
-                    await HandleButtonInput(context, value, button);
-                }
-                else
-                {
-                    // this is not possible
-                }
-            }
-            else
-            {
-                PleaseReEnterNumber(context);
-            }
-        }
-
-        public async Task HandleButtonInput(IDialogContext context, string value, ButtonData button)
-        {
-            if (button.Id == 1 && OrderNumberFormData.TryParse(value, out var form))
-            {
-                await HandleFreeformInput(context, form.OrderNumber);
-            }
-            else
-            {
-                ExitDialog(context);
-            }
-        }
-
-        public async Task HandleFreeformInput(IDialogContext context, string text)
-        {
-            if (DialogHelper.TryUsingText(context, text))
-            {
-                // nothing
-            }
-            else if (LowesHelper.IsValidOrderNumber(text))
-            {
-                await CardService.ShowOrderStatusAsync(context, new OrderData { Number = text }, ResumeAfterChildDialog);
-                PromptDialog.Confirm(context, ResumeAfterConfirm, "Look up another order?");
-            }
-            else
-            {
-                PleaseReEnterNumber(context);
-            }
-        }
-
-        private void PleaseReEnterNumber(IDialogContext context)
-        {
-            PromptDialog.Number(context, ResumeAfterPleaseReEnterNumber, "That doesn't look correct. Please reenter your order number.");
-        }
-
-        private async Task ResumeAfterPleaseReEnterNumber(IDialogContext context, IAwaitable<long> result)
+        private async Task AfterAskNumber(IDialogContext context, IAwaitable<object> result)
         {
             try
             {
-                var value = await result;
-                await HandleFreeformInput(context, value.ToString());
+                var activity = await result as Activity;
+                var answer = activity.Text;
+                if (BusinessRulesService.TryParseOrderNumber(answer, out var number))
+                {
+                    ExitDialog(context, new OrderData { Number = number });
+                }
+                else if (DialogHelper.TryParseExit(answer))
+                {
+                    ExitDialog(context, answer);
+                }
+                else
+                {
+                    await AskNumber(context, "The number you entered is not valid.");
+                }
             }
             catch (TooManyAttemptsException ex)
             {
@@ -99,24 +47,6 @@ namespace LowesBot.Dialogs
             catch (Exception ex)
             {
                 ExitDialog(context, ex);
-            }
-        }
-
-        public Task ResumeAfterChildDialog(IDialogContext context, IAwaitable<object> result)
-        {
-            PromptDialog.Confirm(context, ResumeAfterConfirm, "Look up another order?");
-            return Task.CompletedTask;
-        }
-
-        private async Task ResumeAfterConfirm(IDialogContext context, IAwaitable<bool> answer)
-        {
-            if (await answer)
-            {
-                await StartAsync(context);
-            }
-            else
-            {
-                ExitDialog(context);
             }
         }
 

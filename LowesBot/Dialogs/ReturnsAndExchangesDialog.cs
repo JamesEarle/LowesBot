@@ -1,20 +1,49 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LowesBot.Models;
 using Microsoft.Bot.Builder.Dialogs;
 
 namespace LowesBot.Dialogs
 {
     [Serializable]
-    internal class ReturnsAndExchangesDialog : IDialog<object>
+    internal class ReturnsAndExchangesDialog : ICardDialog
     {
-        public Task StartAsync(IDialogContext context)
+        public async Task StartAsync(IDialogContext context)
         {
-            throw new System.NotImplementedException();
+            await SendCardAsync(context);
         }
 
-        public async Task MessageReceivedAsync(IDialogContext context)
+        public Task SendCardAsync(IDialogContext context)
         {
-            await context.PostAsync("What is your order number?");
+            context.PostAsync("Ready to return.");
+            ExitDialog(context);
+            return Task.CompletedTask;
+        }
+
+        public Task AfterSendCardAsync(IDialogContext context, IAwaitable<object> result)
+        {
+            ExitDialog(context);
+            return Task.CompletedTask;
+        }
+
+        public Task HandleButtonInput(IDialogContext context, string value, ButtonData button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task HandleFreeformInput(IDialogContext context, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ResumeAfterChildDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExitDialog(IDialogContext context, object value = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

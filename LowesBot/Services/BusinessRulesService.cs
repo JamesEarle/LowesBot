@@ -13,20 +13,35 @@ namespace LowesBot.Services
 
     public enum Country { UnitedStates, Canada, Mexico, Unknown }
 
-    public static class LowesHelper
+    public static class BusinessRulesService
     {
-        public static bool IsValidOrderNumber(string number) => Regex.IsMatch(number, "^[0-9]{9}$");
+        public static bool TryParseOrderNumber(object value, out string number)
+        {
+            if (value != null
+                && Regex.IsMatch(value.ToString(), "^[0-9]{9}$"))
+            {
+                number = value.ToString();
+                return true;
+            }
+            else
+            {
+                number = default(string);
+                return false;
+            }
+        }
 
-        public static bool IsValidPurchaseOrder(string number) => Regex.IsMatch(number, "^[0-9]{8}$");
+        public static bool ValidatePurchaseOrderNumber(string number)
+            => Regex.IsMatch(number, "^[0-9]{8}$");
 
-        public static bool IsValidInvoiceNumber(string number) => Regex.IsMatch(number, "^[0-9]{5}$");
+        public static bool ValidateInvoiceNumber(string number)
+            => Regex.IsMatch(number, "^[0-9]{5}$");
 
         public static Country DetermineCountry(string language)
         {
-            if (language.ToLower().EndsWith("mx")) return Country.Mexico;
-            else if (language.ToLower().EndsWith("us")) return Country.UnitedStates;
-            else if (language.ToLower().EndsWith("ca")) return Country.Canada;
-            else return Country.Unknown;
+            if (language.ToLower().EndsWith("mx")) { return Country.Mexico; }
+            else if (language.ToLower().EndsWith("us")) { return Country.UnitedStates; }
+            else if (language.ToLower().EndsWith("ca")) { return Country.Canada; }
+            else { return Country.Unknown; }
         }
 
         public static BusinessHourState DetermineBusinessHourState(TimeZoneName zone, DateTimeOffset? date, Country country)
@@ -45,13 +60,13 @@ namespace LowesBot.Services
                 || (Equals(country, Country.UnitedStates) && date.Value.Date.Equals(HolidayHelper.UnitedStates.LaborDay))
                 || (Equals(country, Country.UnitedStates) && date.Value.Date.Equals(HolidayHelper.UnitedStates.MemorialDay))
                 || (Equals(country, Country.UnitedStates) && date.Value.Date.Equals(HolidayHelper.UnitedStates.Independence))
-                           
+
                 || (Equals(country, Country.Mexico) && date.Value.Date.Equals(HolidayHelper.Mexico.BenitoJuarez))
                 || (Equals(country, Country.Mexico) && date.Value.Date.Equals(HolidayHelper.Mexico.Constitution))
                 || (Equals(country, Country.Mexico) && date.Value.Date.Equals(HolidayHelper.Mexico.Independence))
                 || (Equals(country, Country.Mexico) && date.Value.Date.Equals(HolidayHelper.Mexico.LaborDay))
                 || (Equals(country, Country.Mexico) && date.Value.Date.Equals(HolidayHelper.Mexico.Revolution))
-                           
+
                 || (Equals(country, Country.Canada) && date.Value.Date.Equals(HolidayHelper.Canada.Independence))
                 || (Equals(country, Country.Canada) && date.Value.Date.Equals(HolidayHelper.Canada.Thanksgiving))
                 || (Equals(country, Country.Canada) && date.Value.Date.Equals(HolidayHelper.Canada.LabourDay)))

@@ -96,10 +96,8 @@ namespace LowesBot.Dialogs
                 var stores = StoreService.FindStores(place);
                 if (stores.Any())
                 {
-                    var cards = CardFactory.GetStoreCards(stores.ToArray());
-                    var carousel = cards.ToCarousel(context);
-                    await context.PostAsync(carousel);
-                    PromptDialog.Confirm(context, AfterShowStoresAsync, "Would you like to search again?");
+                    await CardService.ShowStoreContactCardsAsync(context, stores, CardService.Arrangement.Carousel, null);
+                    PromptDialog.Confirm(context, AfterSearchAgainPromptAsync, "Would you like to search again?");
                 }
                 else
                 {
@@ -114,7 +112,7 @@ namespace LowesBot.Dialogs
             }
         }
 
-        private async Task AfterShowStoresAsync(IDialogContext context, IAwaitable<bool> result)
+        private async Task AfterSearchAgainPromptAsync(IDialogContext context, IAwaitable<bool> result)
         {
             if (await result)
             {

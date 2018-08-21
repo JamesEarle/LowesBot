@@ -9,7 +9,7 @@ namespace LowesBot.Dialogs
     internal interface ICardDialog : IDialog<object>
     {
         Task SendCardAsync(IDialogContext context);
-        Task ResumeAfterCardAsync(IDialogContext context, IAwaitable<object> result);
+        Task AfterSendCardAsync(IDialogContext context, IAwaitable<object> result);
         Task HandleButtonInput(IDialogContext context, string value, ButtonData button);
         Task HandleFreeformInput(IDialogContext context, string text);
         Task ResumeAfterChildDialog(IDialogContext context, IAwaitable<object> result);
