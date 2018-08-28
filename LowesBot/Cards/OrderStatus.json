@@ -41,16 +41,17 @@
                   "value": "%value_amount%"
                 }
               ]
-            },
-            {
-              "type": "TextBlock",
-              "text": "%value_details%",
-              "wrap": "true"
             }
           ]
         }
       ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "%value_details%",
+      "wrap": "true"
     }
+
   ],
   "actions": [
     {
