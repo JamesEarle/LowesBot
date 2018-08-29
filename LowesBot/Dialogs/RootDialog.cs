@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web;
 using LowesBot.Models;
 using LowesBot.Services;
+using Microsoft.ApplicationInsights;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
@@ -61,18 +62,31 @@ namespace LowesBot.Dialogs
             }
         }
 
+        void SendTelemtry(string dialog, string eventName)
+        {
+            var telemetry = new TelemetryClient();
+            var properties = new Dictionary<string, string>
+            {
+                {"Dialog", dialog}
+            };
+            telemetry.TrackEvent(eventName, properties);
+        }
+
         public async Task HandleButtonInput(IDialogContext context, string json, ButtonData button)
         {
             if (button.Id == 1)
             {
+                SendTelemtry(nameof(RootDialog), "Find-Store");
                 context.Call(new FindStoreDialog(), ResumeAfterChildDialog);
             }
             else if (button.Id == 2)
             {
+                SendTelemtry(nameof(RootDialog), "Order-Status");
                 context.Call(new OrderStatusDialog(), ResumeAfterChildDialog);
             }
             else if (button.Id == 3)
             {
+                SendTelemtry(nameof(RootDialog), "Return-Exchange");
                 await CardService.ShowStoreContactCardAsync(context, new StoreData(), ResumeAfterChildDialog);
             }
         }
